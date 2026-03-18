@@ -193,6 +193,68 @@ public class ContaTests
     //    - Transferência com conta destino inativa lança exceção
     // =======================================================
 
+    [Fact]
+    public void Transferir_DadosValidos_TransfereSaldoCorretamente()
+    {
+        // Arrange
+        var origem = new Conta("João", 100);
+        var destino = new Conta("Maria", 50);
+
+        // Act
+        origem.Transferir(destino, 40);
+
+        // Assert
+        Assert.Equal(60, origem.Saldo);
+        Assert.Equal(90, destino.Saldo);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-10)]
+    public void Transferir_ValorZeroOuNegativo_LancaArgumentException(decimal valor)
+    {
+        // Arrange
+        var origem = new Conta("João", 100);
+        var destino = new Conta("Maria", 50);
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => origem.Transferir(destino, valor));
+    }
+
+    [Fact]
+    public void Transferir_SaldoInsuficiente_LancaInvalidOperationException()
+    {
+        // Arrange
+        var origem = new Conta("João", 10);
+        var destino = new Conta("Maria", 50);
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => origem.Transferir(destino, 20));
+    }
+
+    [Fact]
+    public void Transferir_ContaOrigemInativa_LancaInvalidOperationException()
+    {
+        // Arrange
+        var origem = new Conta("João", 100);
+        var destino = new Conta("Maria", 50);
+        origem.AlterarAtividade(false);
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => origem.Transferir(destino, 10));
+    }
+
+    [Fact]
+    public void Transferir_ContaDestinoInativa_LancaInvalidOperationException()
+    {
+        // Arrange
+        var origem = new Conta("João", 100);
+        var destino = new Conta("Maria", 50);
+        destino.AlterarAtividade(false);
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => origem.Transferir(destino, 10));
+    }
 
     // =======================================================
     //  Testes para Encerrar

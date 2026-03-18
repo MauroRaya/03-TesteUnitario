@@ -79,8 +79,13 @@ public class Conta
     /// </summary>
     public void Transferir(Conta destino, decimal valor)
     {
-        // TODO: Implemente usando TDD
-        throw new NotImplementedException();
+        if (valor <= 0) throw new ArgumentException();
+        if (this.Ativa is false) throw new InvalidOperationException();
+        if (destino.Ativa is false) throw new InvalidOperationException();
+        if (valor > this.Saldo) throw new InvalidOperationException();
+
+        this.Saldo -= valor;
+        destino.Saldo += valor;
     }
 
     /// <summary>
