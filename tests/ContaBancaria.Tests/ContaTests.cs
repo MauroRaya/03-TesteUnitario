@@ -265,4 +265,37 @@ public class ContaTests
     //    - Conta encerrada tem Ativa == false
     // =======================================================
 
+    [Fact]
+    public void Encerrar_ContaComSaldoZero_EncerraComSucesso()
+    {
+        // Arrange
+        var conta = new Conta("João", 0);
+
+        // Act
+        conta.Encerrar();
+
+        // Assert
+        Assert.False(conta.Ativa);
+    }
+
+    [Fact]
+    public void Encerrar_ContaComSaldo_LancaInvalidOperationException()
+    {
+        // Arrange
+        var conta = new Conta("João", 10);
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => conta.Encerrar());
+    }
+
+    [Fact]
+    public void Encerrar_ContaJaInativa_LancaInvalidOperationException()
+    {
+        // Arrange
+        var conta = new Conta("João", 0);
+        conta.AlterarAtividade(false);
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => conta.Encerrar());
+    }
 }
