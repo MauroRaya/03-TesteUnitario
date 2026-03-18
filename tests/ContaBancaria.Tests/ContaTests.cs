@@ -155,11 +155,32 @@ public class ContaTests
     [Fact]
     public void Sacar_ContaInativa_LancaInvalidOperationException() {
         // Arrange
-        var conta = new Conta(20);
+        var conta = new Conta("Rosemildo", 20);
         conta.AlterarAtividade(false);
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => conta.Sacar(10));
+    }
+
+    [Fact]
+    public void Sacar_SaldoInsuficiente_LancaInvalidOperationException() {
+        // Arrange
+        var conta = new Conta("Rosemildo", 10);
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => conta.Sacar(20));
+    }
+
+    [Fact]
+    public void Sacar_DadosValidos_AlteraSaldoCorretamente() {
+        // Arrange
+        var conta = new Conta("Josevaldo", 30);
+
+        // Act
+        conta.Sacar(20);
+
+        // Assert
+        Assert.Equal(10, conta.Saldo);
     }
 
     // =======================================================

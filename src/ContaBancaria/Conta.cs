@@ -64,6 +64,9 @@ public class Conta
     public void Sacar(decimal valor)
     {
         if (valor <= 0) throw new ArgumentException();
+        if (this.Ativa is false) throw new InvalidOperationException();
+        if (valor > this.Saldo) throw new InvalidOperationException();
+        this.Saldo -= valor;
     }
 
     /// <summary>
