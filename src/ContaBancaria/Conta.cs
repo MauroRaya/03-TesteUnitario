@@ -16,6 +16,10 @@ public class Conta
     public decimal Saldo { get; private set; }
     public bool Ativa { get; private set; }
 
+    public void AlterarAtividade(bool atividade) {
+        this.Ativa = atividade;
+    }
+
     /// <summary>
     /// Cria uma conta bancária.
     /// Regras:
@@ -44,8 +48,9 @@ public class Conta
     /// </summary>
     public void Depositar(decimal valor)
     {
-        // TODO: Implemente usando TDD
-        throw new NotImplementedException();
+        if (valor <= 0) throw new ArgumentException();
+        if (this.Ativa is false) throw new InvalidOperationException();
+        this.Saldo += valor;
     }
 
     /// <summary>
@@ -58,8 +63,7 @@ public class Conta
     /// </summary>
     public void Sacar(decimal valor)
     {
-        // TODO: Implemente usando TDD
-        throw new NotImplementedException();
+        if (valor <= 0) throw new ArgumentException();
     }
 
     /// <summary>

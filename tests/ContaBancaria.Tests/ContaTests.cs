@@ -98,6 +98,38 @@ public class ContaTests
     //    - Depósito em conta inativa lança InvalidOperationException
     // =======================================================
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Depositar_ValorNegativoOuZero_LancaArgumentException(decimal valor) {
+        // Arrange
+        var conta = new Conta("Josevaldo", 10);
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => conta.Depositar(valor));
+    }
+
+    [Fact]
+    public void Depositar_ContaInativa_LancaInvalidOperationException() {
+        // Arrange
+        var conta = new Conta("Josevaldo", 10);
+        conta.AlterarAtividade(false);
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => conta.Depositar(1000));
+    }
+
+    [Fact]
+    public void Depositar_DadosValidos_AlteraSaldoCorretamente() {
+        // Arrange
+        var conta = new Conta("Josevaldo", 10);
+
+        // Act
+        conta.Depositar(20);
+
+        // Assert
+        Assert.Equal(30, conta.Saldo);
+    }
 
     // =======================================================
     //  Testes para Sacar
@@ -109,6 +141,26 @@ public class ContaTests
     //    - Saque em conta inativa lança InvalidOperationException
     // =======================================================
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Sacar_ValorNegativoOuZero_LancaArgumentException(decimal valor) {
+        // Arrange
+        var conta = new Conta("Rosemildo", 10);
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => conta.Sacar(valor));
+    }
+
+    [Fact]
+    public void Sacar_ContaInativa_LancaInvalidOperationException() {
+        // Arrange
+        var conta = new Conta(20);
+        conta.AlterarAtividade(false);
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => conta.Sacar(10));
+    }
 
     // =======================================================
     //  Testes para Transferir
